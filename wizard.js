@@ -392,7 +392,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Envio final
     $('btn-submit')?.addEventListener('click', submitOrder);
 
-    // Inicia no step 1
+    // Botão de abrir wizard
+    $('btn-abrir-wizard')?.addEventListener('click', abrirWizard);
+
+    // Links "Contratar agora" do hero e pricing abrem o wizard
+    document.querySelectorAll('a[href="#contratar"]').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            abrirWizard();
+        });
+    });
+
+    // Inicia no step 1 (wizard ainda oculto)
     renderDeviceCards(1);
     showStep(1);
 });
+
+function abrirWizard() {
+    const cta    = document.getElementById('contratar-cta');
+    const wizard = document.getElementById('contratar-wizard');
+    if (cta)    cta.style.display    = 'none';
+    if (wizard) wizard.style.display = 'block';
+    const section = document.getElementById('contratar');
+    if (section) section.scrollIntoView({ behavior: 'smooth' });
+}

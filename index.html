@@ -186,6 +186,23 @@
 <!-- ── Formulário / Wizard ─────────────────────────────────── -->
 <section id="contratar">
     <div class="container">
+
+        <!-- CTA de entrada — visível por padrão -->
+        <div id="contratar-cta" style="text-align:center;padding:4rem 0;">
+            <div style="font-size:3.5rem;margin-bottom:1rem;">🚀</div>
+            <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;color:#fff;margin-bottom:0.8rem;">
+                Pronto para começar?
+            </h2>
+            <p style="color:var(--text-muted);font-size:1.05rem;max-width:480px;margin:0 auto 2rem;line-height:1.7;">
+                Leva menos de 5 minutos. Preencha os dados da sua farmácia e a configuração dos sensores — já entregamos tudo pré-configurado.
+            </p>
+            <button type="button" class="btn btn-primary" id="btn-abrir-wizard" style="font-size:1.1rem;padding:0.9rem 2.5rem;">
+                Contratar agora →
+            </button>
+        </div>
+
+        <!-- Wizard — oculto até clicar no CTA -->
+        <div id="contratar-wizard" style="display:none;">
         <div class="section-header">
             <h2>Contratar agora</h2>
             <p>Preencha abaixo. Já configuramos tudo antes de enviar o equipamento para você.</p>
@@ -345,6 +362,7 @@
 
             </div><!-- /wizard-form -->
         </div><!-- /wizard-wrapper -->
+        </div><!-- /contratar-wizard -->
     </div>
 </section>
 
