@@ -9,6 +9,7 @@ const FORMSUBMIT_EMAIL = 'juanengml@gmail.com';
 let currentStep = 1;
 const totalSteps = 3;
 let numDevices = 1;
+let wizardAberto = false; // evita scroll na inicialização
 
 // ── Helpers ──────────────────────────────────────────────────
 function $(id) { return document.getElementById(id); }
@@ -20,7 +21,15 @@ function showStep(step) {
     }
     updateProgress(step);
     currentStep = step;
-    window.scrollTo({ top: $('contratar').offsetTop - 80, behavior: 'smooth' });
+
+    // Só faz scroll quando o wizard já foi aberto pelo usuário
+    if (wizardAberto) {
+        const section = document.getElementById('contratar');
+        if (section) {
+            const top = section.getBoundingClientRect().top + window.scrollY - 80;
+            window.scrollTo({ top, behavior: 'smooth' });
+        }
+    }
 }
 
 function updateProgress(active) {
@@ -395,11 +404,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // Botão de abrir wizard
     $('btn-abrir-wizard')?.addEventListener('click', abrirWizard);
 
-    // Links "Contratar agora" do hero e pricing abrem o wizard
-    document.querySelectorAll('a[href="#contratar"]').forEach(link => {
+    // Links do HERO e PRICING ("Contratar agora", "Solicitar proposta") — abrem o wizard
+    document.querySelectorAll('.hero-actions a[href="#contratar"], #pricing a[href="#contratar"]').forEach(link => {
         link.addEventListener('click', e => {
             e.preventDefault();
             abrirWizard();
+        });
+    });
+
+    // Link da NAVBAR ("Contratar") — só scroll suave até a seção, sem abrir wizard
+    document.querySelectorAll('nav a[href="#contratar"]').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const section = document.getElementById('contratar');
+            if (section) {
+                const top = section.getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({ top, behavior: 'smooth' });
+            }
         });
     });
 
@@ -409,18 +430,19 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function abrirWizard() {
+    wizardAberto = true;
+
     const cta    = document.getElementById('contratar-cta');
     const wizard = document.getElementById('contratar-wizard');
     if (cta)    cta.style.display    = 'none';
     if (wizard) wizard.style.display = 'block';
 
-    // Aguarda o layout renderizar antes de rolar
+    // Duplo rAF garante que o layout já foi recalculado antes do scroll
     requestAnimationFrame(() => {
         requestAnimationFrame(() => {
             const section = document.getElementById('contratar');
             if (!section) return;
-            const navHeight = 72; // altura da navbar fixa
-            const top = section.getBoundingClientRect().top + window.scrollY - navHeight;
+            const top = section.getBoundingClientRect().top + window.scrollY - 80;
             window.scrollTo({ top, behavior: 'smooth' });
         });
     });
