@@ -413,6 +413,15 @@ function abrirWizard() {
     const wizard = document.getElementById('contratar-wizard');
     if (cta)    cta.style.display    = 'none';
     if (wizard) wizard.style.display = 'block';
-    const section = document.getElementById('contratar');
-    if (section) section.scrollIntoView({ behavior: 'smooth' });
+
+    // Aguarda o layout renderizar antes de rolar
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            const section = document.getElementById('contratar');
+            if (!section) return;
+            const navHeight = 72; // altura da navbar fixa
+            const top = section.getBoundingClientRect().top + window.scrollY - navHeight;
+            window.scrollTo({ top, behavior: 'smooth' });
+        });
+    });
 }
